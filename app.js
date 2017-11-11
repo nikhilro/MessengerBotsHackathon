@@ -234,6 +234,21 @@ function receivedMessage(event) {
         sendTextMessage(senderID, messageText);
     }
   }
+    
+function firstEntity(nlp, name) {
+  return nlp && nlp.entities && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
+}
+
+//REMOVE THIS -------------------------------------------------------------------------------------------------------------------
+function handleMessage(message) {
+  // check greeting is here and is confident
+  const greeting = firstEntity(message.nlp, 'greeting');
+  if (greeting && greeting.confidence > 0.8) {
+    sendResponse('Hi there!');
+  } else { 
+    // default logic
+  }
+}
 }
 
 /*
