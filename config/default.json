@@ -5,9 +5,9 @@
     //FACEBOOK CREDENTIALS
     "fb_appSecret": "",
     "fb_pageAccessToken": "",
-    "fb_validationToken": "",
+    "fb_validationToken": "ourhackathonproject",
 
     //SHOPIFY CREDENTIALS
-    "sh_apiKey": "",
-    "sh_apiPassword": "",
+    "sh_apiKey": "5dd53aa7531a2690fc96c6c9a8c30508",
+    "sh_apiPassword": "70ca0adb25361ed0625317530a83efd7",
 }
