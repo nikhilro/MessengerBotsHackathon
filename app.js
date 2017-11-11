@@ -277,7 +277,7 @@ function sendHelpOptionsAsButtonTemplates(recipientId) {
         type:"template",
         payload:{
           template_type:"button",
-          text:"Click the button before to get a list of 3 of our products.",
+          text:"Click the button before to get a list of 5 of our products.",
           buttons:[
             {
               "type":"postback",
