@@ -239,7 +239,6 @@ function firstEntity(nlp, name) {
   return nlp && nlp.entities && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
 }
 
-//REMOVE THIS -------------------------------------------------------------------------------------------------------------------
 function handleMessage(message) {
   // check greeting is here and is confident
   const greeting = firstEntity(message.nlp, 'greeting');
@@ -249,12 +248,24 @@ function handleMessage(message) {
     // default logic
   }
 }
+
 }
 
 /*
  * Send a message with buttons.
  *
  */
+
+function handleMessage(message) {
+  // check greeting is here and is confident
+  const greeting = firstEntity(message.nlp, 'greeting');
+  if (greeting && greeting.confidence > 0.8) {
+    sendResponse('Hi there!');
+  } else { 
+    // default logic
+  }
+}
+
 function sendHelpOptionsAsButtonTemplates(recipientId) {
   console.log("[sendHelpOptionsAsButtonTemplates] Sending the help options menu"); 
   var messageData = {
