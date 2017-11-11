@@ -234,38 +234,12 @@ function receivedMessage(event) {
         sendTextMessage(senderID, messageText);
     }
   }
-    
-function firstEntity(nlp, name) {
-  return nlp && nlp.entities && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
-}
-
-function handleMessage(message) {
-  // check greeting is here and is confident
-  const greeting = firstEntity(message.nlp, 'greeting');
-  if (greeting && greeting.confidence > 0.8) {
-    sendResponse('Hi there!');
-  } else { 
-    // default logic
-  }
-}
-
 }
 
 /*
  * Send a message with buttons.
  *
  */
-
-function handleMessage(message) {
-  // check greeting is here and is confident
-  const greeting = firstEntity(message.nlp, 'greeting');
-  if (greeting && greeting.confidence > 0.8) {
-    sendResponse('Hi there!');
-  } else { 
-    // default logic
-  }
-}
-
 function sendHelpOptionsAsButtonTemplates(recipientId) {
   console.log("[sendHelpOptionsAsButtonTemplates] Sending the help options menu"); 
   var messageData = {
@@ -276,8 +250,8 @@ function sendHelpOptionsAsButtonTemplates(recipientId) {
       attachment:{
         type:"template",
         payload:{
-          template_type:"button",   
-          text:"Click the button before to get a list of 5 of our products.",
+          template_type:"button",
+          text:"Click the button before to get a list of 3 of our products.",
           buttons:[
             {
               "type":"postback",
@@ -405,7 +379,7 @@ function respondToHelpRequestWithTemplates(recipientId, requestForHelpOnFeature)
           message: {
             text: options.substring(0, 640),
             quick_replies: [
-              textButton('Get 5 products', 'QR_GET_PRODUCT_LIST', {limit: 3})
+              textButton('Get 3 products', 'QR_GET_PRODUCT_LIST', {limit: 3})
             ]
           },
         };
