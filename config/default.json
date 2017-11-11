@@ -3,7 +3,7 @@
     "host_url": "", //ngrok URL here
 
     //FACEBOOK CREDENTIALS
-    "fb_appSecret": "192142414689988",
+    "fb_appSecret": "c66bb2ffe4e9ce29df40a022badfeeb0",
     "fb_pageAccessToken": "",
     "fb_validationToken": "ourhackathonproject",
 
