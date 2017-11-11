@@ -276,7 +276,7 @@ function sendHelpOptionsAsButtonTemplates(recipientId) {
       attachment:{
         type:"template",
         payload:{
-          template_type:"button",
+          template_type:"button",   
           text:"Click the button before to get a list of 5 of our products.",
           buttons:[
             {
@@ -405,7 +405,7 @@ function respondToHelpRequestWithTemplates(recipientId, requestForHelpOnFeature)
           message: {
             text: options.substring(0, 640),
             quick_replies: [
-              textButton('Get 3 products', 'QR_GET_PRODUCT_LIST', {limit: 3})
+              textButton('Get 5 products', 'QR_GET_PRODUCT_LIST', {limit: 3})
             ]
           },
         };
