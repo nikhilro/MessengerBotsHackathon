@@ -17,7 +17,8 @@ const
   express = require('express'),
   https = require('https'),  
   request = require('request'),
-  Shopify = require('shopify-api-node');
+  Shopify = require('shopify-api-node'),
+  fs = require('fs');
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -30,6 +31,7 @@ app.use(express.static('public'));
  * You can also set them using environment variables.
  *
  */
+fs.readFile("config/default.json");
 
 // App Secret can be retrieved from the App Dashboard
 const FB_APP_SECRET = (process.env.FB_APP_SECRET) ? 
