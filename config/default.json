@@ -1,13 +1,15 @@
 {
     "sh_shopName": "dev-circle-toronto-hackathon",
+<<<<<<< HEAD
     "host_url": "http://6baa2d29.ngrok.io", //ngrok URL here
+=======
+    "host_url": "http://6baa2d29.ngrok.io",
+>>>>>>> 413c444064fb0c927a64c80e53bb4b460dea2e9d
 
-    //FACEBOOK CREDENTIALS
     "fb_appSecret": "c66bb2ffe4e9ce29df40a022badfeeb0",
     "fb_pageAccessToken": "EAACuwKRftsQBAKTqK1mjZAdWw3cSlTdVqe6aSmNZBSuZB7vZBQZAH4lkZAOlWXZBLWn8K9lvLkYbsDEQ75XECzA8GXhZADh2OwpyjtcY5vcZCAaNRbZB7R7CcRSotoXm25WIViNORZAUeqsgKZCP8sBPkZCRvWPugHzasrtiMYU1pUDqf9gZDZD",
     "fb_validationToken": "ourhackathonproject",
 
-    //SHOPIFY CREDENTIALS
     "sh_apiKey": "5dd53aa7531a2690fc96c6c9a8c30508",
     "sh_apiPassword": "70ca0adb25361ed0625317530a83efd7",
 }
