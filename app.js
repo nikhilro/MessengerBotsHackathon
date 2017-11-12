@@ -185,7 +185,9 @@ app.post('/webhook', function (req, res) {
         let propertyNames = [];
         for (var prop in messagingEvent) { propertyNames.push(prop)}
         console.log("[app.post] Webhook received a messagingEvent with properties: ", propertyNames.join());
-        
+      
+console.log("WORKS!");
+
         if (messagingEvent.message) {
           // someone sent a message
           receivedMessage(messagingEvent);
@@ -221,6 +223,9 @@ function receivedMessage(event) {
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
+console.log("SFFFFFFFFFFFFFFFFFFFFFFFFF");
+console.log(typeof (message));
+
   console.log("[receivedMessage] user (%d) page (%d) timestamp (%d) and message (%s)", 
     senderID, pageID, timeOfMessage, JSON.stringify(message));
 
@@ -232,8 +237,14 @@ function receivedMessage(event) {
   }
 
   var messageText = message.text;
-  if (messageText) {
-    wit_response = sendMessageWitAI(senderID, messageText);
+  var lcm = messageText.toLowerCase();
+  console.log(lcm);
+
+  if (lcm) {
+    var wit_response = sendMessageWitAI(senderID, lcm);
+    console.log(wit_response);
+
+    sendTextMessage(senderID, wit_response);
 
     //var lcm = messageText.toLowerCase();
 
@@ -296,8 +307,6 @@ function sendMessageWitAI(recipientId, messageText) {
     return JSON.stringify(data);
   }).catch(console.error)
 }
-
-function 
 
 /*
  * Someone tapped one of the Quick Reply buttons so 
