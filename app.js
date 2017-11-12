@@ -20,6 +20,9 @@ const
   Shopify = require('shopify-api-node'),
   fs = require('fs');
 
+const {Wit, log} = require('node-wit');
+
+
 var app = express();
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
@@ -62,7 +65,7 @@ const SHOPIFY_API_PASSWORD = (process.env.SHOP_API_PASSWORD) ?
 
 const HOST_URL = (process.env.HOST_URL) ? 
   process.env.HOST_URL :
-  config.get('host_url');  
+  config.get('host_url');
 
 // make sure that everything has been properly configured
 if (!(FB_APP_SECRET && FB_VALIDATION_TOKEN && FB_PAGE_ACCESS_TOKEN && SHOPIFY_SHOP_NAME && SHOPIFY_API_KEY && SHOPIFY_API_PASSWORD && HOST_URL)) {
@@ -76,6 +79,13 @@ const shopify = new Shopify({
   password: SHOPIFY_API_PASSWORD
 });
 
+const WIT_APPID = config.get('wit_appId');
+const WIT_TOKEN = config.get('wit_appToken');
+
+const client = new Wit({accessToken: WIT_TOKEN});
+
+const all_tags = [];
+const products = [];
 
 /*
  * Verify that the callback came from Facebook. Using the App Secret from 
@@ -223,29 +233,29 @@ function receivedMessage(event) {
 
   var messageText = message.text;
   if (messageText) {
+    wit_response = sendMessageWitAI(senderID, messageText);
 
-    var lcm = messageText.toLowerCase();
+    //var lcm = messageText.toLowerCase();
 
-    var products; //All 112 objects in an array with keywords
-    var messageKeywords; //Keywords in the inputed message
-    var answer; //The array with products the match the query
-
-    for(var i=0; i < products.length; i++){
+    //var products; //All 112 objects in an array with keywords
+    //var messageKeywords; //Keywords in the inputed message
+    //var answer; //The array with products the match the query
+    /*for(var i=0; i < products.length; i++){
       for(var j=0; j < products[i].keywords.length; j++){
         for(var k=0; k < messageKeywords; k++){
           if(messageKeywords[k] == products[i].keywords[j]){ answer[].push(products[i]);}
         }
       }
-    }
+    }*/
 
-    switch (lcm) {
+    /*switch (lcm) {
       // if the text matches any special keywords, handle them accordingly
       case 'help': sendHelpOptionsAsButtonTemplates(senderID); break;
       
       default:
         // otherwise, just echo it back to the sender
         sendTextMessage(senderID, messageText);
-    }
+    }*/
   }
 }
 
@@ -253,7 +263,7 @@ function receivedMessage(event) {
  * Send a message with buttons.
  *
  */
-function sendHelpOptionsAsButtonTemplates(recipientId) {
+/*function sendHelpOptionsAsButtonTemplates(recipientId) {
   console.log("[sendHelpOptionsAsButtonTemplates] Sending the help options menu"); 
   var messageData = {
     recipient: {
@@ -279,7 +289,15 @@ function sendHelpOptionsAsButtonTemplates(recipientId) {
   };
 
   callSendAPI(messageData);
+}*/
+
+function sendMessageWitAI(recipientId, messageText) {
+  client.message(messageText, {}).then((data) => {
+    return JSON.stringify(data);
+  }).catch(console.error)
 }
+
+function 
 
 /*
  * Someone tapped one of the Quick Reply buttons so 
@@ -398,8 +416,6 @@ function respondToHelpRequestWithTemplates(recipientId, requestForHelpOnFeature)
         };
         callSendAPI(messageData);
       });
-
-
 
       break;
   }
