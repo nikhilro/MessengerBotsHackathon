@@ -223,11 +223,22 @@ function receivedMessage(event) {
   if (messageText) {
 
     var lcm = messageText.toLowerCase();
+
+    var products; //All 112 objects in an array with keywords
+    var messageKeywords; //Keywords in the inputed message
+    var answer; //The array with products the match the query
+
+    for(var i=0; i < products.length; i++){
+      for(var j=0; j < products[i].keywords.length; j++){
+        for(var k=0; k < messageKeywords; k++){
+          if(messageKeywords[k] == products[i].keywords[j]){ answer[].push(products[i]);}
+        }
+      }
+    }
+
     switch (lcm) {
       // if the text matches any special keywords, handle them accordingly
-      case 'help':
-        sendHelpOptionsAsButtonTemplates(senderID);
-        break;
+      case 'help': sendHelpOptionsAsButtonTemplates(senderID); break;
       
       default:
         // otherwise, just echo it back to the sender
