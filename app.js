@@ -232,8 +232,9 @@ function receivedMessage(event) {
   }
 
   var messageText = message.text;
-  if (messageText) {
-    wit_response = sendMessageWitAI(senderID, messageText);
+  var lcm = messageText.toLowerCase()
+  if (lcm) {
+    var wit_response = sendMessageWitAI(senderID, lcm);
 
     sendTextMessage(senderID, wit_response);
 
