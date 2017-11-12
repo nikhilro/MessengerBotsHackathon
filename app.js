@@ -184,9 +184,7 @@ app.post('/webhook', function (req, res) {
 
         let propertyNames = [];
         for (var prop in messagingEvent) { propertyNames.push(prop)}
-        console.log("[app.post] Webhook received a messagingEvent with properties: ", propertyNames.join());
-      
-console.log("WORKS!");
+        console.log("[app.post] Webhook received a messagingEvent with properties: ", propertyNames.join());      
 
         if (messagingEvent.message) {
           // someone sent a message
@@ -222,9 +220,6 @@ function receivedMessage(event) {
   var pageID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
-
-console.log("SFFFFFFFFFFFFFFFFFFFFFFFFF");
-console.log(typeof (message));
 
   console.log("[receivedMessage] user (%d) page (%d) timestamp (%d) and message (%s)", 
     senderID, pageID, timeOfMessage, JSON.stringify(message));
@@ -364,7 +359,7 @@ function respondToHelpRequestWithTemplates(recipientId, requestForHelpOnFeature)
     case 'QR_GET_PRODUCT_LIST':
       var products = shopify.product.list({ limit: requestPayload.limit});
       products.then(function(listOfProducs) {
-        listOfProducts.forEach(function(product) {
+        listOfProducs.forEach(function(product) {
           var url = HOST_URL + "/product.html?id="+product.id;
           templateElements.push({
             title: product.title,
