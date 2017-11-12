@@ -17,7 +17,11 @@ const
   express = require('express'),
   https = require('https'),  
   request = require('request'),
-  Shopify = require('shopify-api-node');
+  Shopify = require('shopify-api-node'),
+  fs = require('fs');
+
+const {Wit, log} = require('node-wit');
+
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -30,6 +34,7 @@ app.use(express.static('public'));
  * You can also set them using environment variables.
  *
  */
+fs.readFile("config/default.json");
 
 // App Secret can be retrieved from the App Dashboard
 const FB_APP_SECRET = (process.env.FB_APP_SECRET) ? 
@@ -60,7 +65,7 @@ const SHOPIFY_API_PASSWORD = (process.env.SHOP_API_PASSWORD) ?
 
 const HOST_URL = (process.env.HOST_URL) ? 
   process.env.HOST_URL :
-  config.get('host_url');  
+  config.get('host_url');
 
 // make sure that everything has been properly configured
 if (!(FB_APP_SECRET && FB_VALIDATION_TOKEN && FB_PAGE_ACCESS_TOKEN && SHOPIFY_SHOP_NAME && SHOPIFY_API_KEY && SHOPIFY_API_PASSWORD && HOST_URL)) {
@@ -74,6 +79,13 @@ const shopify = new Shopify({
   password: SHOPIFY_API_PASSWORD
 });
 
+const WIT_APPID = config.get('wit_appId');
+const WIT_TOKEN = config.get('wit_appToken');
+
+const client = new Wit({accessToken: WIT_TOKEN});
+
+const all_tags = [];
+const products = [];
 
 /*
  * Verify that the callback came from Facebook. Using the App Secret from 
@@ -173,7 +185,9 @@ app.post('/webhook', function (req, res) {
         let propertyNames = [];
         for (var prop in messagingEvent) { propertyNames.push(prop)}
         console.log("[app.post] Webhook received a messagingEvent with properties: ", propertyNames.join());
-        
+      
+console.log("WORKS!");
+
         if (messagingEvent.message) {
           // someone sent a message
           receivedMessage(messagingEvent);
@@ -209,6 +223,9 @@ function receivedMessage(event) {
   var timeOfMessage = event.timestamp;
   var message = event.message;
 
+console.log("SFFFFFFFFFFFFFFFFFFFFFFFFF");
+console.log(typeof (message));
+
   console.log("[receivedMessage] user (%d) page (%d) timestamp (%d) and message (%s)", 
     senderID, pageID, timeOfMessage, JSON.stringify(message));
 
@@ -220,19 +237,36 @@ function receivedMessage(event) {
   }
 
   var messageText = message.text;
-  if (messageText) {
+  var lcm = messageText.toLowerCase();
+  console.log(lcm);
 
-    var lcm = messageText.toLowerCase();
-    switch (lcm) {
+  if (lcm) {
+    var wit_response = sendMessageWitAI(senderID, lcm);
+    console.log(wit_response);
+
+    sendTextMessage(senderID, wit_response);
+
+    //var lcm = messageText.toLowerCase();
+
+    //var products; //All 112 objects in an array with keywords
+    //var messageKeywords; //Keywords in the inputed message
+    //var answer; //The array with products the match the query
+    /*for(var i=0; i < products.length; i++){
+      for(var j=0; j < products[i].keywords.length; j++){
+        for(var k=0; k < messageKeywords; k++){
+          if(messageKeywords[k] == products[i].keywords[j]){ answer[].push(products[i]);}
+        }
+      }
+    }*/
+
+    /*switch (lcm) {
       // if the text matches any special keywords, handle them accordingly
-      case 'help':
-        sendHelpOptionsAsButtonTemplates(senderID);
-        break;
+      case 'help': sendHelpOptionsAsButtonTemplates(senderID); break;
       
       default:
         // otherwise, just echo it back to the sender
         sendTextMessage(senderID, messageText);
-    }
+    }*/
   }
 }
 
@@ -240,7 +274,7 @@ function receivedMessage(event) {
  * Send a message with buttons.
  *
  */
-function sendHelpOptionsAsButtonTemplates(recipientId) {
+/*function sendHelpOptionsAsButtonTemplates(recipientId) {
   console.log("[sendHelpOptionsAsButtonTemplates] Sending the help options menu"); 
   var messageData = {
     recipient: {
@@ -266,6 +300,12 @@ function sendHelpOptionsAsButtonTemplates(recipientId) {
   };
 
   callSendAPI(messageData);
+}*/
+
+function sendMessageWitAI(recipientId, messageText) {
+  client.message(messageText, {}).then((data) => {
+    return JSON.stringify(data);
+  }).catch(console.error)
 }
 
 /*
@@ -324,7 +364,7 @@ function respondToHelpRequestWithTemplates(recipientId, requestForHelpOnFeature)
     case 'QR_GET_PRODUCT_LIST':
       var products = shopify.product.list({ limit: requestPayload.limit});
       products.then(function(listOfProducs) {
-        listOfProducs.forEach(function(product) {
+        listOfProducts.forEach(function(product) {
           var url = HOST_URL + "/product.html?id="+product.id;
           templateElements.push({
             title: product.title,
@@ -385,8 +425,6 @@ function respondToHelpRequestWithTemplates(recipientId, requestForHelpOnFeature)
         };
         callSendAPI(messageData);
       });
-
-
 
       break;
   }
