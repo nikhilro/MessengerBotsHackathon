@@ -186,6 +186,7 @@ app.post('/webhook', function (req, res) {
         for (var prop in messagingEvent) { propertyNames.push(prop)}
         console.log("[app.post] Webhook received a messagingEvent with properties: ", propertyNames.join());
       
+console.log("WORKS!");
 
         if (messagingEvent.message) {
           // someone sent a message
@@ -236,7 +237,9 @@ console.log(typeof (message));
   }
 
   var messageText = message.text;
-  var lcm = messageText.toLowerCase()
+  var lcm = messageText.toLowerCase();
+  console.log(lcm);
+
   if (lcm) {
     var wit_response = sendMessageWitAI(senderID, lcm);
     console.log(wit_response);
