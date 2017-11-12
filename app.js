@@ -357,6 +357,7 @@ function respondToHelpRequestWithTemplates(recipientId, requestForHelpOnFeature)
     };
   }
 
+
   switch (requestPayload.action) {
     case 'QR_GET_PRODUCT_LIST':
       var products = shopify.product.list({ limit: requestPayload.limit});
