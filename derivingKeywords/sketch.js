@@ -3,9 +3,12 @@
 //kingdom, phylum, class, order, family, genus, species.
 
 var products = [];
+var keywords = [];
 
 function preload() {
-  var tempArray = loadJSON("product.json", intoArray);
+    var tempArray2 = loadJSON("keywords.json", intoArray2);
+    var tempArray = loadJSON("productKeywords.json", intoArray1);
+    
 }
 
 /**
@@ -14,18 +17,27 @@ function preload() {
  * @param  {number} i    This is what we are looking for
  * @return {number}      The index which matches x or -1 if no match
  */
-function intoArray(tempArray) {
+function intoArray1(tempArray) {
   createCanvas(600,600)//windowWidth, windowHeight); //NEED A BETTER WAY TO NAVIGATE
   var number = countProps(tempArray);
   for (var i = 0; i < number; i++) {
-    products.push(new Product(tempArray[i]));
+    products.push(tempArray[i]);
+  }
+  console.log("Done array: " + millis());
+}
+
+function intoArray2(tempArray2) {
+  createCanvas(600,600)//windowWidth, windowHeight); //NEED A BETTER WAY TO NAVIGATE
+  var number = countProps(tempArray2);
+  for (var i = 0; i < number; i++) {
+    keywords.push(tempArray2[i]);
   }
   console.log("Done array: " + millis());
 }
 
 function setup() {
   console.log("Setup:" + millis());
-  saveJSON(products, 'productKeywords.json');
+//  saveJSON(products, 'productKeywords.json');
 }
 
 
