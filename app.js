@@ -235,6 +235,8 @@ function receivedMessage(event) {
   if (messageText) {
     wit_response = sendMessageWitAI(senderID, messageText);
 
+    sendTextMessage(senderID, wit_response);
+
     //var lcm = messageText.toLowerCase();
 
     //var products; //All 112 objects in an array with keywords
@@ -296,8 +298,6 @@ function sendMessageWitAI(recipientId, messageText) {
     return JSON.stringify(data);
   }).catch(console.error)
 }
-
-function 
 
 /*
  * Someone tapped one of the Quick Reply buttons so 
